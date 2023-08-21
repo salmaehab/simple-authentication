@@ -23,6 +23,26 @@ var db = mysql.createConnection({
         });
         res.status(200).send("User Registered successfully")
   })
+  app.post('/login', (req, res)=>{
+    const username = req.body.username
+    const password = req.body.password
+      db.query("SELECT username,password FROM users where username=? AND password=?",[username,password],(err,result)=>{
+          if(err)
+          { 
+            console.log("err",err);
+          }
+           if(result.length>0)
+          {
+              console.log("result",result)
+              res.send(result)
+          }
+          else
+          {
+              res.send({Message:"Wrong username/password combination"})
+          }
+      });
+      
+})
 app.listen(3001,()=>{
     console.log('listening on port 3001')
 })
